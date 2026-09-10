@@ -189,9 +189,12 @@ class Controls(ControlsExt):
     hudControl.leadVisible = self.sm['longitudinalPlan'].hasLead
     hudControl.leadDistanceBars = self.sm['selfdriveState'].personality.raw + 1
     hudControl.visualAlert = self.sm['selfdriveState'].alertHudVisual
-    sound = self.sm['selfdriveState'].alertSound.raw
-    if hasattr(car.CarControl.HUDControl.AudibleAlert, sound):
-      hudControl.audibleAlert = sound
+    try:
+      sound_name = str(self.sm['selfdriveState'].alertSound)
+      if hasattr(car.CarControl.HUDControl.AudibleAlert, sound_name):
+        hudControl.audibleAlert = getattr(car.CarControl.HUDControl.AudibleAlert, sound_name)
+    except Exception:
+      pass
 
     hudControl.rightLaneVisible = True
     hudControl.leftLaneVisible = True
