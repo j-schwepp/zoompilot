@@ -146,6 +146,19 @@ inline static std::unordered_map<std::string, ParamKeyAttributes> keys = {
     {"Version", {PERSISTENT, STRING}},
 
     // --- sunnypilot params --- //
+
+    // Accelerators: what runs the large model. See sunnypilot/accelerators/.
+    {"AcceleratorProgress", {CLEAR_ON_MANAGER_START, JSON}},
+    {"Offroad_AcceleratorUnavailable", {CLEAR_ON_MANAGER_START, JSON}},
+    // jetlink backend. Readiness must survive a reboot, or every ignition cycle
+    // would rebuild a multi-minute TensorRT engine.
+    {"JetlinkEnabled", {PERSISTENT | BACKUP, BOOL}},
+    {"JetlinkEndpoint", {PERSISTENT | BACKUP, STRING}},
+    {"JetlinkModel", {PERSISTENT | BACKUP, STRING}},  // legacy: the pick is ModelManager_ActiveBundleChestnut; read once to migrate
+    {"JetlinkEngineReady", {PERSISTENT, STRING}},
+    {"JetlinkSpec", {PERSISTENT, JSON}},
+    {"JetlinkCachedModels", {PERSISTENT, JSON}},
+    {"JetlinkModelPointers", {PERSISTENT, JSON}},
     {"ApiCache_DriveStats", {PERSISTENT, JSON}},
     {"AutoLaneChangeBsmDelay", {PERSISTENT | BACKUP, BOOL, "0"}},
     {"AutoLaneChangeTimer", {PERSISTENT | BACKUP, INT, "0"}},
@@ -302,6 +315,7 @@ inline static std::unordered_map<std::string, ParamKeyAttributes> keys = {
     {"LiveTorqueParamsToggle", {PERSISTENT | BACKUP , BOOL}},
     {"LiveTorqueParamsRelaxedToggle", {PERSISTENT | BACKUP , BOOL}},
     {"TorqueControlTune", {PERSISTENT | BACKUP, FLOAT, "0.0"}},
+    {"TorqueControlTuneBig", {PERSISTENT | BACKUP, FLOAT, "1.0"}},  // big-model tune
     {"SpeedDependentTorqueToggle", {PERSISTENT | BACKUP, BOOL, "0"}},
     {"TorqueParamsOverrideEnabled", {PERSISTENT | BACKUP, BOOL, "0"}},
     {"TorqueParamsOverrideFriction", {PERSISTENT | BACKUP, FLOAT, "0.1"}},
